@@ -1,10 +1,15 @@
 import csv
+import itertools
+import json
 import logging
 import os
+import pprint
 import re
 import string
+from random import shuffle
 
 import nltk
+import numpy as np
 from nltk.collocations import *
 from tabulate import tabulate
 
@@ -13,6 +18,11 @@ DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'I2B2_data/track_2_training/training/'
 )
+
+
+def write(file_name, text, method='a'):
+    with open(file_name, method) as f:
+        f.write(json.dumps(text))
 
 
 def answers():
@@ -29,16 +39,49 @@ def answers():
     return answers
 
 
-def answers_by_category():
+def answers_by_category(answs=None):
+    if not answs:
+        answs = answers()
     class_answers = {}
-    for file_name, class_ in answers().items():
+    for file_name, class_ in answs.items():
         class_answers.setdefault(class_, [])
         class_answers[class_].append(file_name)
     return class_answers
 
 
+def training_test_sets(train_percent=50, answs=None):
+    """Return two lists of filenames, one for training one for testing."""
+    if not answs:
+        answs = answer()
+    train_n = len(answers) * train_percent / 100
+    file_names = answers.keys()
+    shuffle(file_names)
+    return file_names[:train_n+1], file_names[train_n+1:]
+
+
+def training_test_sets_by_class_ratio(train_percent=50, answs=None):
+    if not answs:
+        answs = answers_by_category()
+    train = {}
+    test = {}
+    for class_, file_names in answs.items():
+        train_n = len(file_names) * train_percent / 100
+        shuffle(file_names)
+        train.setdefault(class_, [])
+        test.setdefault(class_, [])
+        train[class_] += (file_names[:train_n+1])
+        test[class_] += (file_names[train_n+1:])
+    return train, test
+
+
 def abs_path(file_name):
     return os.path.join(DATA_PATH, file_name)
+
+
+def analysis_path(file_name):
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'analysis')
+    return os.path.join(path, file_name)
+
 
 
 def read_file(file_path):
@@ -197,11 +240,13 @@ def level_of_distress(text, default=26.0):
     return float(default)
 
 
-def word_counts(f, file_names=None):
+def word_counts(f, file_names=None, ignore_nones=True):
     """Return most repeated words returned from function `f` in file_names."""
     word_counts = nltk.FreqDist([])
     for file_name in (file_names or answers().items()):
         text = f(read_file(abs_path(file_name)))
+        if ignore_nones and not text:
+            continue
         all_words = nltk.tokenize.word_tokenize(text.lower())
         stopwords = nltk.corpus.stopwords.words('english')
         word_counts += nltk.FreqDist(
@@ -211,15 +256,15 @@ def word_counts(f, file_names=None):
     return word_counts
 
 
-def word_counts_per_class(f, skip_words=None):
+def word_counts_per_class(f, filenames, skip_words=None, ignore_nones=True):
     """Return most repeated words returned from function `f` for each class."""
     if not skip_words:
         # Add to this as you see fit.
         skip_words = ['', 'haynes', 'hpi', 'mr', 'mrs', 'ms']
     words_per_class = {}
-    for class_, file_names in answers_by_category().items():
+    for class_, file_names in filenames.items():
         words_per_class.setdefault(class_, nltk.FreqDist([]))
-        words_per_class[class_] += word_counts(f, file_names)
+        words_per_class[class_] += word_counts(f, file_names, ignore_nones)
 
     for class_ in words_per_class:
         for word in skip_words:
@@ -237,7 +282,7 @@ def rank_by_word_counts(text, counts, return_most=True):
     words = split_text_into_words(text)
     for class_, word_counts in counts.items():
         for word in words:
-            class_scores[class_] += word_counts[word]
+            class_scores[class_] += word_counts.get(word, 0)
     if return_most:
         top = [class_ for class_, rank in class_scores.items()
                if rank == max(class_scores.values())]
@@ -251,14 +296,14 @@ def rank_by_word_counts(text, counts, return_most=True):
 
 
 class AccuracyTracker(object):
-    def __init__(self):
+    def __init__(self, test_set):
         self.answers = answers()
         answers_by_cat = answers_by_category()
         self.classes = answers_by_cat.keys()
         self.predictions = {class_: {
             "guessed": 0,
             "guessed_correct": 0,
-            "actual": len(answers_by_cat[class_])
+            "actual": len(test_set[class_])
         } for class_ in self.classes}
         self.right = 0
         self.wrong = 0
@@ -289,20 +334,20 @@ class AccuracyTracker(object):
         print tabulate(table)
 
 
-def word_count_rank(f):
+def word_count_rank(f, ignore_nones=True):
     """Print accuracy of wordcount classification on text from func `f`."""
-    tracker = AccuracyTracker()
-    counts = word_counts_per_class(f)
-    for file_name in tracker.answers:
+    trainset, testset = training_test_sets_by_class_ratio()
+    tracker = AccuracyTracker(testset)
+    counts = word_counts_per_class(f, trainset, ignore_nones=ignore_nones)
+    for file_name in reduce(lambda x, y: x+y, testset.values()):
         text = f(read_file(abs_path(file_name)))
         class_ = rank_by_word_counts(text, counts)
         tracker.guess(file_name, class_)
     tracker.print_table()
+    # To look back historically at what was working well and what wasn't.
+    write("{}word_counts.txt".format(f.__name__), counts)
+    write("{}word_counts.txt".format(f.__name__), tracker.accuracy)
 
-
-###############################################################################
-# TODO: The following 4 functions need to be split into test and train sets.
-###############################################################################
 
 def chief_complaint_by_word_count():
     """Print accuracy of classifying files by wordcount in chief complaints."""
@@ -322,15 +367,93 @@ def formulation_by_word_count():
     word_count_rank(forumulation)
 
 
+def print_word_counts_for_review(f):
+    """Write word counts for each category based on a func to outfile."""
+    data = word_counts_per_class(history_and_precipitating_events,
+                                 answers_by_category(),
+                                 ignore_nones=True)
+    for class_, words in data.items():
+        with open("{}_count_review.txt".format(class_), 'w') as file_:
+            pprint.pprint(dict(words), file_)
 
-# Modify to skip file_names with unknowns or doubles and see accuracy then? Do
-# this because it just defaults to a value, which is highly inaccurate.
-# Perhaps we can return a percentage and use that as a weight somewhere else.
-# Should also go through and remove useless word by addeing them to the # skiplist.
-chief_complaint_by_word_count()
 
-# Could use all improvements above.
-history_and_precipitating_events_by_word_count()
+def words_in_these_not_those_classes(f, in_these, not_these, deviations=2):
+    """Return words frequent in a list of classes but not the others.
 
-# Could use all improvements above.
-formulation_by_word_count()
+    :param f: The function that returns text to make word counts from.
+    :param in_these: A list of classes to check for words in.
+    :param not_these: A list of classes to check words are not in.
+    :param std: how many standard deviations away we place our limits.
+
+    Min and Max default to 2 standard deviations from the mean count of words
+    in that particular category.
+    """
+    data = word_counts_per_class(f, answers_by_category(), ignore_nones=True)
+    words = []
+    for class_ in in_these:
+        word_counts = data[class_]
+        counts = word_counts.values()
+        mean = np.mean(counts)
+        std = np.std(counts)
+        upper_limit = mean + (std*deviations)
+        for word, count in word_counts.items():
+            if count > upper_limit:
+                words.append(word)
+    for class_ in not_these:
+        word_counts = data[class_]
+        counts = word_counts.values()
+        mean = np.mean(counts)
+        std = np.std(counts)
+        lower_limit = mean - (std*deviations)
+        for word in words:
+            count = word_counts.get(word)
+            if count and count > lower_limit:
+                words.pop(words.index(word))
+    return words
+
+
+def write_words_unique_to_class(f, name):
+    """Write files of unique words in each class, for exploration."""
+    classes = set(answers_by_category().keys())
+    for i in [1, 2, 3]:
+        combos = itertools.combinations(classes, i)
+        for in_these in combos:
+            not_these = classes - set(in_these)
+            data = words_in_these_not_those_classes(f, in_these, not_these)
+            filename = "unique_words/{}_{}_unique_words.txt".format(
+                "-".join(in_these), name)
+            write(analysis_path(filename), data, 'w')
+
+
+def useful_words_in_each_class(folder):
+    """Return dict of useful words identified in each category.
+
+    Example usage: `useful_words_in_each_class('unique_words/history_precip')`
+    """
+    words = {}
+    folder_path = analysis_path(os.path.join(folder))
+    for filename in os.listdir(folder_path):
+        class_ = filename.split('_')[0]
+        path = os.path.join(folder_path, filename)
+        words[class_] = json.loads(read_file(path))
+    return words
+
+
+def predict_by_useful_words(f, folder):
+    """Print by using unique words identified in each category."""
+    answers = answers_by_category()
+    tracker = AccuracyTracker(answers)
+    useful_words = useful_words_in_each_class(folder)
+    counts = {class_: {word: 1 for word in words}
+              for class_, words in useful_words.items()}
+    for file_name in reduce(lambda x, y: x+y, answers.values()):
+        text = f(read_file(abs_path(file_name)))
+        class_ = rank_by_word_counts(text, counts)
+        tracker.guess(file_name, class_)
+    tracker.print_table()
+    # To look back historically at what was working well and what wasn't.
+    write("{}useful_word_counts.txt".format(f.__name__), counts)
+    write("{}useful_counts.txt".format(f.__name__), tracker.accuracy)
+
+
+predict_by_useful_words(history_and_precipitating_events, 'unique_words/history_precip')
