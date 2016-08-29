@@ -300,6 +300,10 @@ def word_count_rank(f):
     tracker.print_table()
 
 
+###############################################################################
+# TODO: The following 4 functions need to be split into test and train sets.
+###############################################################################
+
 def chief_complaint_by_word_count():
     """Print accuracy of classifying files by wordcount in chief complaints."""
     print("By Wordcount: Chief Complaint")
@@ -322,7 +326,6 @@ def formulation_by_word_count():
 # Modify to skip file_names with unknowns or doubles and see accuracy then? Do
 # this because it just defaults to a value, which is highly inaccurate.
 # Perhaps we can return a percentage and use that as a weight somewhere else.
-# 100% of ABSENT guesses are correct (there is just too few).
 # Should also go through and remove useless word by addeing them to the # skiplist.
 chief_complaint_by_word_count()
 

@@ -20,7 +20,3 @@ much data for as many files as possible.  About 20-30ish files are not caught in
 
 Level of distress as well as strengths and abilities seems to be an error that could indicate a good classification.
 Should take a look at the data grabbed by Viveks script to see if it is there.
-
-
-When testing word count accuracy with chief complaints. Using the lowerst classification when the class returns more than one
-value gives  65% accuracy.  If we return the highest value it gives us 67% accuracy.
