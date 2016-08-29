@@ -82,6 +82,23 @@ def split_text_into_words(text):
             if not any(char.isdigit() for char in word)]
 
 
+def find_field(field, text):
+    """Search text for field, return value before next field."""
+    field_name = "{}:".format(field.lower())
+    start_index = text.lower().find(field_name)
+    if start_index == -1:
+        logging.warning("{} not found.".format(field))
+        return None
+    text = text[(start_index + len(field) + 1):]
+    try:
+        end_index = text.find(re.findall("\w+:", text)[0])
+    except IndexError:
+        logging.warning("Could not find field following: {}".format(field))
+        return None
+    else:
+        return text[:end_index]
+
+
 class StringBetweenException(Exception):
     pass
 
@@ -178,23 +195,6 @@ def level_of_distress(text, default=26.0):
         default = mean_level_of_distress(answers().keys())
 
     return float(default)
-
-
-def find_field(field, text):
-    """Search text for field, return value before next field."""
-    field_name = "{}:".format(field.lower())
-    start_index = text.lower().find(field_name)
-    if start_index == -1:
-        logging.warning("{} not found.".format(field))
-        return None
-    text = text[(start_index + len(field) + 1):]
-    try:
-        end_index = text.find(re.findall("\w+:", text)[0])
-    except IndexError:
-        logging.warning("Could not find field following: {}".format(field))
-        return None
-    else:
-        return text[:end_index]
 
 
 def word_counts(f, file_names=None):
