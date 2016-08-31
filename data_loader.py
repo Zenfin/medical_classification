@@ -1,11 +1,11 @@
 import csv
 import os
+from random import shuffle
 
 from main import (
-    ANNOTADED_BY_1_FILE,
-    ANNOTADED_BY_2_FILE,
+    ANNOTATED_BY_1_FILE,
+    ANNOTATED_BY_2_FILE,
     OUTPUT_PATH,
-    AccuracyTracker,
     training_test_sets_by_class_ratio,
 )
 
@@ -22,11 +22,13 @@ def clean_row(row):
 
 
 def load_all_data(filename):
+    """Return the csv as a list of lists."""
     with open(os.path.join(OUTPUT_PATH, filename), 'r') as f:
         return [clean_row(row) for row in csv.reader(f)]
 
 
 def strip_fields(data, strip):
+    """Remove columns in strip from each data row."""
     fields = data[0]
     indexes = []
     for i, field in enumerate(fields):
@@ -49,16 +51,35 @@ def group_by_dependent_variable(data, varname):
     return grouped_data
 
 
-def load_annotated_by_2(dependent_variable="outcome"):
-    data = strip_fields(load_all_data(ANNOTADED_BY_2_FILE), ['id'])
-    return group_by_dependent_variable(data, dependent_variable)
+def extract_y(data, dependent_variable):
+    index = data[0].index(dependent_variable)
+    y = [row.pop(index) for row in data[1:]]
+    return data[1:], y
 
 
-def load_annotated_by_1(dependent_variable="outcome"):
-    data = strip_fields(load_all_data(ANNOTADED_BY_1_FILE), ['id'])
-    return group_by_dependent_variable(data, dependent_variable)
+def shuffle_x_y(x, y):
+    data = zip(x, y)
+    shuffle(data)
+    return zip(*data)
 
 
-def train_test(f, train_percent=80):
-    train, test = training_test_sets_by_class_ratio(train_percent, f())
-    return train, test
+def split_into_train_test(x, y, train_percent):
+    train_n = len(x) * train_percent / 100
+    return x[:train_n+1], y[:train_n+1], x[train_n+1:], y[train_n+1:]
+
+
+def load_annotated_by_2():
+    return strip_fields(load_all_data(ANNOTATED_BY_2_FILE), ['id'])
+
+
+def load_annotated_by_1():
+    return strip_fields(load_all_data(ANNOTATED_BY_1_FILE), ['id'])
+
+
+def train_test(f, train_percent=80, dependent_variable="outcome"):
+    """Return train and test X, Y pairs based on data from f."""
+    x, y = shuffle_x_y(*extract_y(f(), dependent_variable))
+    train_x, train_y, test_x, test_y = split_into_train_test(
+        x, y, train_percent
+    )
+    return train_x, train_y, test_x, test_y

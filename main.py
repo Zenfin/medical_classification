@@ -20,8 +20,8 @@ DATA_PATH = os.path.join(
 )
 OUTPUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'output')
 
-ANNOTADED_BY_2_FILE = "dataAnnotatedBy2_v15.csv"
-ANNOTADED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
+ANNOTATED_BY_2_FILE = "dataAnnotatedBy2_v15.csv"
+ANNOTATED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
 
 
 def write(file_name, text, method='a'):
