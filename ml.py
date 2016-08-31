@@ -10,7 +10,6 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 
-
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn import svm
 from sklearn import tree
@@ -27,6 +26,7 @@ def accuracy(yHat,y_test):
 	print('accuracy='+str(accuracyPercentage))
 	print('actual='+str(y_test))
 	print('predicted='+str(yHat))
+
 
 fp=open('dataAnnotatedBy2_v15.csv')
 data=fp.readlines()
@@ -71,13 +71,13 @@ for line in new_test_data[1:]:
 #predictedValues4=model4.predict(x_test)
 #accuracy(predictedValues4,y_test)
 
-		
+
 #model4=svm.SVC(kernel='rbf')
 #model4.fit(x_training,y_training)
 #predictedValues4=model4.predict(x_test)
 #accuracy(predictedValues4,y_test)
 
-		
+
 #model5=tree.DecisionTreeClassifier(criterion='entropy',random_state=0)
 #model5.fit(x_training,y_training)
 #predictedValues5=model5.predict(x_test)
@@ -116,5 +116,5 @@ for i in [600]:
 
 
 
-	
+
 

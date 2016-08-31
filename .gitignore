@@ -1,3 +1,4 @@
 *.pyc
 I2B2_data
 .DS_STORE
+output/
