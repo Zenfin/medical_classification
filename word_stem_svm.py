@@ -2,15 +2,9 @@
 Concept based on this paper by Joachims
 
 https://www.cs.cornell.edu/people/tj/publications/joachims_98a.pdf
-
-NOTE: Does not yet implement information gain.
 """
-
 from main import (
     answers,
-    chief_complaint,
-    formulation,
-    history_and_precipitating_events,
     training_test_sets_by_class_ratio,
     word_counts,
 )

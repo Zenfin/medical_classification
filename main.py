@@ -18,6 +18,10 @@ DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'I2B2_data/track_2_training/training/'
 )
+OUTPUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'output')
+
+ANNOTADED_BY_2_FILE = "dataAnnotatedBy2_v15.csv"
+ANNOTADED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
 
 
 def write(file_name, text, method='a'):
@@ -54,9 +58,9 @@ def training_test_sets(train_percent=50, answs=None):
     if not answs:
         answs = answer()
     train_n = len(answers) * train_percent / 100
-    file_names = answers.keys()
-    shuffle(file_names)
-    return file_names[:train_n+1], file_names[train_n+1:]
+    data = answs.keys()
+    shuffle(data)
+    return data[:train_n+1], data[train_n+1:]
 
 
 def training_test_sets_by_class_ratio(train_percent=50, answs=None,
@@ -65,15 +69,15 @@ def training_test_sets_by_class_ratio(train_percent=50, answs=None,
         answs = answers_by_category()
     train = {}
     test = {}
-    for class_, file_names in answs.items():
+    for class_, data in answs.items():
         if class_ in (ignore_class or []):
             continue
-        train_n = len(file_names) * train_percent / 100
-        shuffle(file_names)
+        train_n = len(data) * train_percent / 100
+        shuffle(data)
         train.setdefault(class_, [])
         test.setdefault(class_, [])
-        train[class_] += (file_names[:train_n+1])
-        test[class_] += (file_names[train_n+1:])
+        train[class_] += (data[:train_n+1])
+        test[class_] += (data[train_n+1:])
     return train, test
 
 
@@ -308,7 +312,7 @@ class AccuracyTracker(object):
         self.predictions = {class_: {
             "guessed": 0,
             "guessed_correct": 0,
-            "actual": len(test_set[class_])
+            "actual": 0
         } for class_ in self.classes}
         self.right = 0
         self.wrong = 0
@@ -319,6 +323,7 @@ class AccuracyTracker(object):
 
     def raw_guess(self, correct_answer, guess):
         self.predictions[guess]['guessed'] += 1
+        self.predictions[correct_answer]['actual'] += 1
         if guess == correct_answer:
             self.right += 1
             self.predictions[guess]['guessed_correct'] += 1

@@ -20,3 +20,13 @@ much data for as many files as possible.  About 20-30ish files are not caught in
 
 Level of distress as well as strengths and abilities seems to be an error that could indicate a good classification.
 Should take a look at the data grabbed by Viveks script to see if it is there.
+
+
+# 8-30-16
+
+Because the words are notuseful in predition, try bigrams, trigrams.  
+Also try adding length of article, each cateogry, etc.
+Could also do number of lines in the file.
+Or even number of blank lines in a file
+Could also do number of lines in the file.
+Or even number of blank lines in a file.
