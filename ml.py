@@ -19,15 +19,15 @@ OUTCOMES = {
     3: "SEVERE"
 }
 
-def accuracy(y_hat, y_test):
+def accuracy(y_hat, y_test, training_length):
     accuracy = 0
     for i in range(0,len(y_test)):
         if(int(y_test[i]) == int(y_hat[i])):
             accuracy = accuracy + 1
 
     accuracyPercentage = accuracy / float(len(y_test))
-    print('Number of Training Samples = ' + str(TRAINING))
-    print('Total Number of samples = ' + str(len(data)))
+    print('Number of Training Samples = {}'.format(training_length))
+    print('Total Number of samples = {}'.format(training_length + len(y_test)))
     print('accuracy = ' + str(accuracyPercentage))
     print('actual = ' + str(y_test))
     print('predicted = ' + str(y_hat))
@@ -79,5 +79,5 @@ for i in [600]:
         outcome = OUTCOMES[adapredict1[val]]
         print("{},{}".format(OUTCOMES[y_test[val]], outcome))
     #adapredict2 = ada2.predict(x_test)
-    #accuracy(adapredict1,y_test)
+    accuracy(adapredict1, y_test, len(y_training))
     #accuracy(adapredict2,y_test)
