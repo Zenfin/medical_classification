@@ -32,6 +32,7 @@ ANNOTATED_BY_2_FILE = "dataAnnotatedBy2_v15.csv"
 ANNOTATED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
 BPRS_BY_2 = "bprs_data_by_2.csv"
 BPRS_BY_1 = "bprs_data_by_1.csv"
+BPRS_AND_BASELINE_BY_2 = "bprs_and_baseline_by_2.csv"
 
 
 def write(file_name, text, method='a'):
@@ -478,3 +479,21 @@ def predict_by_useful_words(f, folder):
     # To look back historically at what was working well and what wasn't.
     write("{}useful_word_counts.txt".format(f.__name__), counts)
     write("{}useful_counts.txt".format(f.__name__), tracker.accuracy)
+
+
+def merge_csvs(filename1, filename2, output_filename):
+    with open(os.path.join(OUTPUT_PATH, output_filename), 'w') as output:
+        writer = csv.writer(output)
+        with open(os.path.join(OUTPUT_PATH, filename1), 'r') as f1:
+            with open(os.path.join(OUTPUT_PATH, filename2), 'r') as f2:
+                headers = None
+                for row1, row2 in zip(csv.reader(f1), csv.reader(f2)):
+                    data = row1 + row2
+                    if not headers:
+                        headers = data
+                        addtional_outcome_indexes = [
+                            i for i, x in enumerate(headers) if x == "outcome"
+                        ][1:]
+                    data = [d for i, d in enumerate(data)
+                            if i not in addtional_outcome_indexes]
+                    writer.writerow(data)

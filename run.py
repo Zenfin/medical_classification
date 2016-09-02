@@ -5,7 +5,11 @@ from extract import (
     BaselineRowWriter,
     BPRSRowWriter,
 )
-from main import ANNOTATED_BY_2_FILE, BPRS_BY_2
+from main import (
+    ANNOTATED_BY_2_FILE,
+    BPRS_BY_2,
+    BPRS_AND_BASELINE_BY_2
+)
 from ml import all_classfiers_on_file
 
 
@@ -17,7 +21,11 @@ METHODS = {
     'BPRS': {
         'filename': BPRS_BY_2,
         'writer': BPRSRowWriter,
+    },
+    'baseline+BPRS': {
+        'filename': BPRS_AND_BASELINE_BY_2,
     }
+
 }
 
 
