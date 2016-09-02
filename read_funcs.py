@@ -55,6 +55,7 @@ def pos_ternary_field(field_name, positive_value="yes", negative_value="no",
         if v != -2:
             v += 1
         return v
+    return inner
 
 
 def word_count(words):

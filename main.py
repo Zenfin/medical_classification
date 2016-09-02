@@ -30,6 +30,8 @@ OUTPUT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'output')
 
 ANNOTATED_BY_2_FILE = "dataAnnotatedBy2_v15.csv"
 ANNOTATED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
+BPRS_BY_2 = "bprs_data_by_2.csv"
+BPRS_BY_1 = "bprs_data_by_1.csv"
 
 
 def write(file_name, text, method='a'):

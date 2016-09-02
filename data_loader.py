@@ -68,17 +68,13 @@ def split_into_train_test(x, y, train_percent):
     return x[:train_n+1], y[:train_n+1], x[train_n+1:], y[train_n+1:]
 
 
-def load_annotated_by_2():
-    return strip_fields(load_all_data(ANNOTATED_BY_2_FILE), ['id'])
+def load_data(filename, strip=['id']):
+    return strip_fields(load_all_data(filename), strip)
 
 
-def load_annotated_by_1():
-    return strip_fields(load_all_data(ANNOTATED_BY_1_FILE), ['id'])
-
-
-def train_test(f, train_percent=80, dependent_variable="outcome", shuffle=False):
-    """Return train and test X, Y pairs based on data from f."""
-    x, y = extract_y(f(), dependent_variable)
+def train_test(data, train_percent=80, dependent_variable="outcome", shuffle=False):
+    """Return train and test X, Y pairs based on data."""
+    x, y = extract_y(data, dependent_variable)
     if shuffle:
         x, y = shuffle_x_y(x, y)
     train_x, train_y, test_x, test_y = split_into_train_test(

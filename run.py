@@ -1,10 +1,41 @@
 import sys
 
-from extract import create_csv_data
-from ml import all_classifiers_annotated_by_2
+from extract import (
+    extract_data,
+    BaselineRowWriter,
+    BPRSRowWriter,
+)
+from main import ANNOTATED_BY_2_FILE, BPRS_BY_2
+from ml import all_classfiers_on_file
+
+
+METHODS = {
+    'baseline': {
+        'filename': ANNOTATED_BY_2_FILE,
+        'writer': BaselineRowWriter,
+    },
+    'BPRS': {
+        'filename': BPRS_BY_2,
+        'writer': BPRSRowWriter,
+    }
+}
+
+
+def run_extract_method(method):
+    config = METHODS[method]
+    extract_data(config['filename'], config['writer'])
+
+
+def run_classifications(method):
+    all_classfiers_on_file(METHODS[method]['filename'])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == 'extract':
-        create_csv_data()
-    all_classifiers_annotated_by_2()
+    try:
+        method = sys.argv[1]
+    except IndexError:
+        print("No method specified. Choose one: {}".format(METHODS.keys()))
+    else:
+        if len(sys.argv) > 2 and sys.argv[2] == "extract":
+            run_extract_method(method)
+        run_classifications(method)

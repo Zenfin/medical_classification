@@ -9,7 +9,7 @@ from sklearn.svm import SVC, LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
 from accuracy import Tester
-from data_loader import train_test, load_annotated_by_2
+from data_loader import train_test, load_data
 from main import OUTCOMES
 
 
@@ -29,7 +29,7 @@ ALL_CLASSIFIERS = {
 
 ALL_CLASSIFIERS = {
     name: Pipeline([
-      # ('feature_selection', SelectFromModel(LinearSVC(C=0.1, penalty="l1", dual=False))),
+      ('feature_selection', SelectFromModel(LinearSVC(C=0.1, penalty="l1", dual=False))),
       ('classification', model)
     ]) for name, model in ALL_CLASSIFIERS.items()
 }
@@ -52,7 +52,9 @@ def all_classfiers(*train_test_data):
         run_test(name, model, *train_test_data)
 
 
-def all_classifiers_annotated_by_2():
+def all_classfiers_on_file(filename, shuffle=False):
     train_test_data = train_test(
-        load_annotated_by_2, train_percent=TRAIN_PERCENT, shuffle=False)
+        load_data(filename),
+        train_percent=TRAIN_PERCENT,
+        shuffle=shuffle)
     all_classfiers(*train_test_data)
