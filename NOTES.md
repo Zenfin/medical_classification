@@ -30,3 +30,11 @@ Could also do number of lines in the file.
 Or even number of blank lines in a file
 Could also do number of lines in the file.
 Or even number of blank lines in a file.
+
+
+# 8-31-16
+
+Compare the refactored data to the previous data.  Just roll back a commit.
+
+Develop a scale to predict with the PANNS scale.
+http://www.ncbi.nlm.nih.gov/books/NBK169692/
