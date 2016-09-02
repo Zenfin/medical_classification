@@ -13,16 +13,10 @@ from sklearn.tree import DecisionTreeClassifier
 
 from accuracy import Tester
 from data_loader import train_test, load_annotated_by_2
+from main import OUTCOMES
 
 
 TRAIN_PERCENT = 80
-
-OUTCOMES = {
-    0: "ABSENT",
-    1: "MILD",
-    2: "MODERATE",
-    3: "SEVERE"
-}
 
 ALL_CLASSIFIERS = {
     "Nearest Neighbors": KNeighborsClassifier(3),
@@ -95,8 +89,7 @@ def all_scikitlearn_classifiers(*train_test_data):
         run_test(name, model, *train_test_data)
 
 
-all_scikitlearn_classifiers(*train_test_data)
-
+#all_scikitlearn_classifiers(*train_test_data)
 #svm_linear(*train_test_data)
 #svm_rbf(*train_test_data)
 #decision_tree(*train_test_data)

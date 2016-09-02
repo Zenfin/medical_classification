@@ -14,6 +14,14 @@ from nltk.collocations import *
 from tabulate import tabulate
 
 
+OUTCOMES = {
+    0: "ABSENT",
+    1: "MILD",
+    2: "MODERATE",
+    3: "SEVERE"
+}
+
+
 DATA_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'I2B2_data/track_2_training/training/'
@@ -136,13 +144,13 @@ def find_field(field, text):
     field_name = "{}:".format(field.lower())
     start_index = text.lower().find(field_name)
     if start_index == -1:
-        logging.warning("{} not found.".format(field))
+        logging.debug("{} not found.".format(field))
         return None
     text = text[(start_index + len(field) + 1):]
     try:
         end_index = text.find(re.findall("\w+:", text)[0])
     except IndexError:
-        logging.warning("Could not find field following: {}".format(field))
+        logging.debug("Could not find field following: {}".format(field))
         return None
     else:
         return text[:end_index]
