@@ -38,3 +38,7 @@ Compare the refactored data to the previous data.  Just roll back a commit.
 
 Develop a scale to predict with the PANNS scale.
 http://www.ncbi.nlm.nih.gov/books/NBK169692/
+
+
+Eleminatetion variables
+

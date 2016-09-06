@@ -29,7 +29,7 @@ ALL_CLASSIFIERS = {
 
 ALL_CLASSIFIERS = {
     name: Pipeline([
-      ('feature_selection', SelectFromModel(LinearSVC(C=0.1, penalty="l1", dual=False))),
+      #('feature_selection', SelectFromModel(LinearSVC(C=0.1, penalty="l1", dual=False))),
       ('classification', model)
     ]) for name, model in ALL_CLASSIFIERS.items()
 }
