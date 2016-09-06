@@ -40,5 +40,12 @@ Develop a scale to predict with the PANNS scale.
 http://www.ncbi.nlm.nih.gov/books/NBK169692/
 
 
-Eleminatetion variables
+# 9-6-16
+
+TODO:
+
+Cascading each category
+Going through manually classifying EHRs using various scales, then checking if the evaulation matches.
+Extracting more information from the data that seems important but is not included
+Write a readme
 
