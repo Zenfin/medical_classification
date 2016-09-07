@@ -25,6 +25,6 @@ The key is name of the column to be created, the `func` key's value is a functio
 returns the value for that field.
 `BPRS` keys identify the BPRS category from `rating_scales.py`'s `BPRS` dictionary.
 
-# Changing the test percentage
+# Changing the train/test percentage
 
 You can change the `TRAIN_PERCENT` variable in the `ml.py` file.
