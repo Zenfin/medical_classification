@@ -5,10 +5,7 @@
 1. Get the dataset from Vivek or Myself and place it in the root folder of this project.
 Expects this file structure
 
-|- (ALL FILES FROM GIT)
- - `I2B2_data`
- |- track_2_training
-  |- (TRAINING FILES)
+`(ALL FILES FROM GIT)` next to `I2B2_data/track_2_training/TRAINING_FILES`
 
 2. Create a virtualenv if desired.
 3. Install the requirements. `pip install -r reqs.txt`
