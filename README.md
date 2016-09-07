@@ -24,3 +24,7 @@ Fields are stored in an ordered dictionary in the `fields.py` file.
 The key is name of the column to be created, the `func` key's value is a function that does the extraction and
 returns the value for that field.
 `BPRS` keys identify the BPRS category from `rating_scales.py`'s `BPRS` dictionary.
+
+# Changing the test percentage
+
+You can change the `TRAIN_PERCENT` variable in the `ml.py` file.
