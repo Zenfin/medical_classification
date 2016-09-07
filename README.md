@@ -12,9 +12,9 @@ Expects this file structure
 
 # Usage
 
-To run the baseline classification of data run `python run.py CLASSIFICATION_METHOD`
+To run classification of data `python run.py CLASSIFICATION_METHOD`
 This will take the csv data in the file identified in `run.py`'s  `METHODS` dictionary
-and make prediction using all the various algorithms in `ml.py`'s `ALL_CLASSIFIERTS` dictionary.
+and make prediction using all the various algorithms in `ml.py`'s `ALL_CLASSIFIERS` dictionary.
 
 If you wish to re-extract the data into the csvs you can run `python run.py CLASSIFICATION_METHOD extract`
 
