@@ -36,7 +36,16 @@ CASCADES = {
         (0, 'Decision Tree'),
         (2, 'Linear SVM'),
     ],
-
+    'best_non_binary_baseline+BPRS': [
+        (0, 'Naive Bayes'),
+        (3, 'Linear SVM'),
+        (1, 'AdaBoost'),
+    ],
+    'best_non_binary_BPRS': [
+        (0, 'Random Forest'),
+        (2, 'Decision Tree'),
+        (1, 'AdaBoost'),
+    ],
 }
 
 
