@@ -11,7 +11,7 @@ from main import (
     BPRS_AND_BASELINE_BY_2
 )
 from ml import all_classfiers_on_file
-from cascade import CascadeClassifier, AllComboCascadeClassifier
+from cascade import CascadeClassifier
 
 
 METHODS = {

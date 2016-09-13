@@ -54,14 +54,6 @@ class CascadeClassifier(object):
         return predicted_values
 
 
-class AllComboCascadeClassifier(CascadeClassifier):
-    def __init__(self, name, classifiers={}, print_threshold=0, chunk_size=3):
-        self.name = name
-        self.all_classifiers = classifiers
-        self.print_threshold=print_threshold
-        self.chunk_size = chunk_size
-        self.threads = []
-
 def get_combos(self, y_train):
     outcomes = set(y_train)
     outcome_combos = permutations(outcomes)
@@ -85,27 +77,22 @@ def spawn_threads(chunk_size, *train_test_data):
     threads = []
     for chunk in outcome_chunks:
         args = [chunk, model_combos] + list(train_test_data)
-            threads.append(threading.Thread(target=run_combo, args=args))
-        return threads
-
-def run_combo(outcome_combos, model_combos, *train_test_data):
-    AllComboCascadeClassifier(
-        "All Combos",
-        classifiers=deepcopy(ALL_CLASSIFIERS)
-    ).run(outcome_combos, model_combos, *train_test_data)
+        threads.append(threading.Thread(target=run, args=args))
+    return threads
 
 
-def run(self, outcome_combos, model_combos, *train_test_data):
+def run(outcome_combos, model_combos, *train_test_data):
     best = None
     for outcomes in outcome_combos:
         for combo in model_combos:
-            tracker = self.run_combo(combo, outcomes, *train_test_data)
+            tracker = predict_combo(combo, outcomes, *train_test_data)
             if not best or tracker.accuracy > best.accuracy:
                 best = tracker
     with open("best_cascade.txt", "a") as f:
-        f.write(self.accuracy_msg)
+        f.write(accuracy_msg(tracker))
 
-def run_combo(self, combo, outcomes, x_training, y_training, x_test, y_test):
+
+def predict_combo(self, combo, outcomes, x_training, y_training, x_test, y_test):
     name = ",".join(list(combo) + map(str, outcomes))
     self.classifiers = [
         (outcomes[i], deepcopy(self.all_classifiers[k]))
@@ -115,20 +102,17 @@ def run_combo(self, combo, outcomes, x_training, y_training, x_test, y_test):
     predicted_vals = self.predict(x_test)
     tracker = Tester(predicted_vals, OUTCOMES, name)
     tracker.predict(y_training, y_test)
-    if tracker.accuracy > self.print_threshold:
-        print(self.accuracy_msg(tracker))
+    print(accuracy_msg(tracker))
     return tracker
 
-def accuracy_msg(self, tracker):
+
+def accuracy_msg(tracker):
     return "Accuracy: {}% - {}".format(
         round(tracker.accuracy), tracker.algo_name)
 
 
-
-
-
 def all_combo_classifier(chunk_size, *train_test_data):
-    threads = spawn_threads(cascase, chunk_size, *train_test_data)
+    threads = spawn_threads(chunk_size, *train_test_data)
     for thread in threads:
         thread.start()
     while processing(threads):
@@ -144,8 +128,3 @@ def all_combo_classifier_from_file(self, filename, shuffle=False, ignore=[],
         shuffle=shuffle,
         ignore=ignore
     ))
-
-
-
-
-
