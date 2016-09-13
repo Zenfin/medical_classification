@@ -52,9 +52,11 @@ def all_classfiers(*train_test_data):
         run_test(name, model, *train_test_data)
 
 
-def all_classfiers_on_file(filename, shuffle=False):
+def all_classfiers_on_file(filename, shuffle=False, ignore=[]):
     train_test_data = train_test(
         load_data(filename),
         train_percent=TRAIN_PERCENT,
-        shuffle=shuffle)
+        shuffle=shuffle,
+        ignore=ignore
+    )
     all_classfiers(*train_test_data)

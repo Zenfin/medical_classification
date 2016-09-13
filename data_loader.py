@@ -72,11 +72,18 @@ def load_data(filename, strip=['id']):
     return strip_fields(load_all_data(filename), strip)
 
 
-def train_test(data, train_percent=80, dependent_variable="outcome", shuffle=False):
+def filter_data(x, y, ignore=[]):
+    return zip(*filter(lambda i: str(i[1]) not in map(str, ignore), zip(x, y)))
+
+
+def train_test(data, train_percent=80, dependent_variable="outcome",
+               shuffle=False, ignore=[]):
     """Return train and test X, Y pairs based on data."""
     x, y = extract_y(data, dependent_variable)
     if shuffle:
         x, y = shuffle_x_y(x, y)
+    if ignore:
+        x, y = filter_data(x, y, ignore)
     train_x, train_y, test_x, test_y = split_into_train_test(
         x, y, train_percent
     )
