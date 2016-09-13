@@ -1,5 +1,6 @@
 import sys
 
+from cascade import cascade_classify_on_file
 from extract import (
     extract_data,
     BaselineRowWriter,
@@ -11,7 +12,6 @@ from main import (
     BPRS_AND_BASELINE_BY_2
 )
 from ml import all_classfiers_on_file
-from cascade import CascadeClassifier
 
 
 METHODS = {
@@ -28,13 +28,15 @@ METHODS = {
     }
 }
 
+
 CASCADES = {
-    'best_non_binary': CascadeClassifier("one", [
+    'best_non_binary': [
         (1, 'Linear Discriminant Analysis'),
         (0, 'Random Forest'),
         (2, 'Linear SVM'),
-    ]),
+    ],
 }
+
 
 def run_extract_method(method):
     config = METHODS[method]
@@ -46,7 +48,9 @@ def run_classifications(method, ignore=[]):
 
 
 def run_cascade(cascade_name, method):
-    CASCADES[cascade_name].run_on_file(METHODS[method]['filename'])
+    filename = METHODS[method]['filename']
+    classifiers = CASCADES[cascade_name]
+    cascade_classify_on_file(filename, classifiers)
 
 
 if __name__ == "__main__":
