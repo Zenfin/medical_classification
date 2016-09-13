@@ -31,11 +31,12 @@ METHODS = {
 
 
 CASCADES = {
-    'best_non_binary': [
+    'best_non_binary_baseline': [
         (1, 'Linear Discriminant Analysis'),
-        (0, 'Random Forest'),
+        (0, 'Decision Tree'),
         (2, 'Linear SVM'),
     ],
+
 }
 
 

@@ -1,12 +1,9 @@
-import csv
-import threading
 from itertools import permutations, product
-from time import sleep
 
 from accuracy import Tester
 from cascade import cascade_classify
 from data_loader import train_test, load_data
-from main import chunk, OUTCOMES
+from main import OUTCOMES
 from ml import TRAIN_PERCENT, ALL_CLASSIFIERS
 
 
@@ -23,21 +20,15 @@ def combo_cascade_on_file(filename, shuffle=False, ignore=[], chunk_size=3):
 
 def combo_cascade(chunk_size, *train_test_data):
     """Get highest cascade from all possible combos."""
-    threads = spawn_cascade_threads(chunk_size, *train_test_data)
-    for thread in threads:
-        thread.start()
-    while processing(threads):
-        sleep(5)
-    print("Done")
-
-
-def spawn_cascade_threads(chunk_size, *train_test_data):
-    threads = []
+    best = None
     outcome_combos, classifier_combos = get_combos(train_test_data[1])
-    for outcome_chunk in chunk(outcome_combos, chunk_size):
-        args = [outcome_chunk, classifier_combos] + list(train_test_data)
-        threads.append(threading.Thread(target=cascade_thread, args=args))
-    return threads
+    for outcomes in outcome_combos:
+        for classifiers in classifier_combos:
+            classifiers = zip(outcomes[:len(classifiers)], classifiers)
+            tracker = predict_combo(classifiers, outcomes, *train_test_data)
+            if not best or tracker.accuracy > best.accuracy:
+                best = tracker
+    best.print_results()
 
 
 def get_combos(y_train):
@@ -48,23 +39,6 @@ def get_combos(y_train):
     return list(outcome_combos), list(classifier_combos)
 
 
-def processing(threads):
-    for thread in threads:
-        if thread.is_alive():
-            return True
-
-
-def cascade_thread(outcome_combos, classifier_combos, *train_test_data):
-    best = None
-    for outcomes in outcome_combos:
-        for classifiers in classifier_combos:
-            classifiers = zip(outcomes[:len(classifiers)], classifiers)
-            tracker = predict_combo(classifiers, outcomes, *train_test_data)
-            if not best or tracker.accuracy > best.accuracy:
-                best = tracker
-    write_tracker(best)
-
-
 def predict_combo(classifiers, outcomes, *train_test_data):
     name = str(classifiers)
     predicted_vals = cascade_classify(classifiers, *train_test_data, print_=False)
@@ -72,9 +46,3 @@ def predict_combo(classifiers, outcomes, *train_test_data):
     tracker.predict(train_test_data[-2], train_test_data[-1])
     print(tracker.accuracy, tracker.algo_name)
     return tracker
-
-
-def write_tracker(tracker):
-    with open("best_cascade.csv", "a") as f:
-        writer = csv.writer(f)
-        writer.writerow([tracker.accuracy, tracker.algo_name])
