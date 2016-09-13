@@ -481,6 +481,10 @@ def predict_by_useful_words(f, folder):
     write("{}useful_counts.txt".format(f.__name__), tracker.accuracy)
 
 
+def chunk(iterable, size):
+    return [iterable[i:i + size] for i in xrange(0, len(iterable), size)]
+
+
 def merge_csvs(filename1, filename2, output_filename):
     with open(os.path.join(OUTPUT_PATH, output_filename), 'w') as output:
         writer = csv.writer(output)

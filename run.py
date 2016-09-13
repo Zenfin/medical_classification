@@ -1,6 +1,7 @@
 import sys
 
 from cascade import cascade_classify_on_file
+from cascade_combo import combo_cascade_on_file
 from extract import (
     extract_data,
     BaselineRowWriter,
@@ -49,8 +50,11 @@ def run_classifications(method, ignore=[]):
 
 def run_cascade(cascade_name, method):
     filename = METHODS[method]['filename']
-    classifiers = CASCADES[cascade_name]
-    cascade_classify_on_file(filename, classifiers)
+    if cascade_name == "combo":
+        combo_cascade_on_file(filename)
+    else:
+        classifiers = CASCADES[cascade_name]
+        cascade_classify_on_file(filename, classifiers)
 
 
 if __name__ == "__main__":
