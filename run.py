@@ -60,11 +60,12 @@ def run_classifications(method, ignore=[]):
 
 def run_cascade(cascade_name, method):
     filename = METHODS[method]['filename']
+    binary = (sys.argv[-1] == "binary")
     if cascade_name == "combo":
-        combo_cascade_on_file(filename)
+        combo_cascade_on_file(filename, binary=binary)
     else:
         classifiers = CASCADES[cascade_name]
-        cascade_classify_on_file(filename, classifiers)
+        cascade_classify_on_file(filename, classifiers, binary=binary)
 
 
 if __name__ == "__main__":

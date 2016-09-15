@@ -7,7 +7,8 @@ from main import OUTCOMES
 from ml import TRAIN_PERCENT, ALL_CLASSIFIERS
 
 
-def combo_cascade_on_file(filename, shuffle=False, ignore=[], chunk_size=3):
+def combo_cascade_on_file(filename, shuffle=False, ignore=[], chunk_size=3,
+                          binary=False):
     """Get highest cascade from all possible combos on a file."""
     train_test_data = train_test(
         load_data(filename),
@@ -15,17 +16,18 @@ def combo_cascade_on_file(filename, shuffle=False, ignore=[], chunk_size=3):
         shuffle=shuffle,
         ignore=ignore
     )
-    combo_cascade(chunk_size, *train_test_data)
+    combo_cascade(chunk_size, binary, *train_test_data)
 
 
-def combo_cascade(chunk_size, *train_test_data):
+def combo_cascade(chunk_size, binary, *train_test_data):
     """Get highest cascade from all possible combos."""
     best = None
     outcome_combos, classifier_combos = get_combos(train_test_data[1])
     for outcomes in outcome_combos:
         for classifiers in classifier_combos:
             classifiers = zip(outcomes[:len(classifiers)], classifiers)
-            tracker = predict_combo(classifiers, outcomes, *train_test_data)
+            tracker = predict_combo(classifiers, outcomes, binary,
+                                    *train_test_data)
             if not best or tracker.accuracy > best.accuracy:
                 best = tracker
     best.print_results()
@@ -39,9 +41,10 @@ def get_combos(y_train):
     return list(outcome_combos), list(classifier_combos)
 
 
-def predict_combo(classifiers, outcomes, *train_test_data):
+def predict_combo(classifiers, outcomes, binary, *train_test_data):
     name = str(classifiers)
-    predicted_vals = cascade_classify(classifiers, *train_test_data, print_=False)
+    predicted_vals = cascade_classify(classifiers, *train_test_data,
+                                      print_=False, binary=binary)
     tracker = Tester(predicted_vals, OUTCOMES, name)
     tracker.predict(train_test_data[-2], train_test_data[-1])
     print(tracker.accuracy, tracker.algo_name)
