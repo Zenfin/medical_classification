@@ -31,21 +31,33 @@ METHODS = {
 
 
 CASCADES = {
-    'best_non_binary_baseline': [
+    'best_non_binary_baseline': [  # 69%
         (1, 'Linear Discriminant Analysis'),
         (0, 'Decision Tree'),
         (2, 'Linear SVM'),
     ],
-    'best_non_binary_baseline+BPRS': [
+    'best_non_binary_baseline+BPRS': [  # 75%
         (0, 'Naive Bayes'),
         (3, 'Linear SVM'),
         (1, 'AdaBoost'),
     ],
-    'best_non_binary_BPRS': [
+    'best_non_binary_BPRS': [  # 61%
         (0, 'Random Forest'),
         (2, 'Decision Tree'),
         (1, 'AdaBoost'),
     ],
+    'best_binary_baseline': [  # 69-75%
+        (1, 'AdaBoost'),
+        (0, 'Decision Tree'),
+        (2, 'Linear SVM'),
+    ],
+    'best_binary_baseline+BPRS': [  # 70%
+        (1, 'AdaBoost'),
+        (3, 'Naive Bayes'),
+        (0, 'Random Forest'),
+    ],
+
+
 }
 
 
