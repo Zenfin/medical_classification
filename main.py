@@ -33,6 +33,10 @@ ANNOTATED_BY_1_FILE = "dataAnnotatedBy1_v15.csv"
 BPRS_BY_2 = "bprs_data_by_2.csv"
 BPRS_BY_1 = "bprs_data_by_1.csv"
 BPRS_AND_BASELINE_BY_2 = "bprs_and_baseline_by_2.csv"
+DISORDER_HISTORY_2 = "disorder_history.csv"
+BASELINE_AND_DISORDER_HISTORY_2 = "baseline_and_disorder_history.csv"
+BASELINE_BPRS_AND_DISORDER_HISTORY_2 = "baseline_bprs_and_disorder_history.csv"
+BPRS_AND_DISORDER_HISTORY_2 = "bprs_and_disorder_history.csv"
 
 
 def write(file_name, text, method='a'):
@@ -479,6 +483,13 @@ def predict_by_useful_words(f, folder):
     # To look back historically at what was working well and what wasn't.
     write("{}useful_word_counts.txt".format(f.__name__), counts)
     write("{}useful_counts.txt".format(f.__name__), tracker.accuracy)
+
+
+def negated_phrase(phrase):
+    for negator in ['no', 'none', 'denies']:
+        if re.findall(' {} '.format(negator), phrase):
+            return True
+    return False
 
 
 def chunk(iterable, size):

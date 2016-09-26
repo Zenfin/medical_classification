@@ -1,14 +1,20 @@
 import csv
 import os
+import re
+
+import nltk.data
 
 from main import (
-    ANNOTATED_BY_1_FILE,
-    ANNOTATED_BY_2_FILE,
     DATA_PATH,
     OUTPUT_PATH,
+    chief_complaint,
+    formulation,
+    history_and_precipitating_events,
+    negated_phrase,
     read_file,
 )
 from fields import FIELDS
+from lists import DISORDERS
 from rating_scales import BPRS
 
 
@@ -65,6 +71,56 @@ class BPRSRowWriter(_AbstractRowWriter):
                 row.setdefault(k, 0)
                 row[k] += v
         return [outcome] + [row.get(key, 0) for key in BPRS]
+
+
+class DisorderHistoryRowWriter(_AbstractRowWriter):
+    def headers(self):
+        return ['outcome', '# of disorders'] + DISORDERS.values()
+
+    def create(self, file_path):
+        data = read_file(file_path)
+        outcome = FIELDS['outcome']['func'](data)
+        disorders = self.disorders_with_a_history(self.doctor_text(data))
+        disorder_binaries = [1 if key in disorders else 0 for key in DISORDERS]
+        return [outcome, len(disorders)] + disorder_binaries
+
+    def doctor_text(self, data):
+        return ".".join([
+            chief_complaint(data),
+            history_and_precipitating_events(data),
+            formulation(data)
+        ])
+
+    def disorders_with_a_history(self, data):
+        """Get the disorders with a history."""
+        data = data.replace('\n', '')
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        sentences = tokenizer.tokenize(data)
+        history_sentences = [s for s in sentences if self.history_sentence(s)]
+        disorders = self.extract_disorders(history_sentences, positive=True)
+        return disorders
+
+    def history_sentence(self, sentence):
+        matches = ["history of", "h/o", "hx"]
+        for match in matches:
+            if re.findall(match, sentence.lower()):
+                return True
+
+    def extract_disorders(self, sentences, positive=True):
+        disorders = set()
+        for sentence in sentences:
+            for phrase in re.split(',| and ', sentence):
+                if negated_phrase(phrase):
+                    continue
+                for disorder, disorder_group in DISORDERS.items():
+                    if self.has_disorder(phrase, disorder_group):
+                        disorders.add(disorder)
+        return disorders
+
+    def has_disorder(self, phrase, disorder_group):
+        for disorder in disorder_group:
+            if re.findall(disorder, phrase.lower()):
+                return True
 
 
 def process(folder, writer):

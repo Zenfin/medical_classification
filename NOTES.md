@@ -49,3 +49,51 @@ Going through manually classifying EHRs using various scales, then checking if t
 Extracting more information from the data that seems important but is not included
 Write a readme
 
+
+# 9-25-16
+
+Exploring records:
+
+## Severe
+
+### Steps to take:
+
+1. See if you can extract history of ___ from each and then see if they are the bad ones.
+2. Using parsy mcparse face or something to find negatives for history and suidcide for example no intent to harm
+3. Get positivity of sentence
+
+- Having a history of an illness: history of ____ , h/o, hx (ignore History of Present Illness and Precipitating Events)
+no prior psychiatric history
+
+- Suicide Attempts
+attempted suicide
+SA or suicide attempt
+kill himself, kill herself
+SI/HI
+No thought, desire, or intent to harm herself or others. No si/sx of mania, psychosis, OCD
+
+Number of drugs in the diagnosis
+
+denies symptoms/ denies any symptoms
+denying
+
+PTSD: Symptoms: intrusive thoughts, nightmares, emotional and physical distress, avoidance, loss of interest, detachment, numbing, poor concentration, sleep disturbance (5 hrs interrupted), anger/irritability, exaggerated startle, hypervigilance
+
+long-term psychiatric care / long-term care
+
+alcohol dependence
+
+sexually abused
+
+major depression, psychotic features, alcohol dependence
+
+Other ategories:
+- Unstable Thoughts:  Nightmares, panic attacks, suicidal thoughts
+
+psychotic
+
+## Moderate
+
+optimistic
+enjoy
+pleasure

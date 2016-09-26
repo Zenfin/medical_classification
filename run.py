@@ -6,11 +6,16 @@ from extract import (
     extract_data,
     BaselineRowWriter,
     BPRSRowWriter,
+    DisorderHistoryRowWriter,
 )
 from main import (
     ANNOTATED_BY_2_FILE,
     BPRS_BY_2,
-    BPRS_AND_BASELINE_BY_2
+    BPRS_AND_BASELINE_BY_2,
+    DISORDER_HISTORY_2,
+    BASELINE_AND_DISORDER_HISTORY_2,
+    BASELINE_BPRS_AND_DISORDER_HISTORY_2,
+    BPRS_AND_DISORDER_HISTORY_2,
 )
 from ml import all_classfiers_on_file
 
@@ -26,7 +31,20 @@ METHODS = {
     },
     'baseline+BPRS': {
         'filename': BPRS_AND_BASELINE_BY_2,
-    }
+    },
+    'disorder_history': {
+        'filename': DISORDER_HISTORY_2,
+        'writer': DisorderHistoryRowWriter,
+    },
+    'baseline+disorder_history': {
+        'filename': BASELINE_AND_DISORDER_HISTORY_2,
+    },
+    'baseline+bprs+disorder_history': {
+        'filename': BASELINE_BPRS_AND_DISORDER_HISTORY_2,
+    },
+    'bprs+disorder_history': {
+        'filename': BPRS_AND_DISORDER_HISTORY_2,
+    },
 }
 
 
@@ -46,6 +64,11 @@ CASCADES = {
         (2, 'Decision Tree'),
         (1, 'AdaBoost'),
     ],
+    'best_non_binary_baseline+BPRS+disorders': [  # 70%  Very well on Severe.
+        (3, 'Linear SVM'),
+        (2, 'Naive Bayes'),
+        (0, 'AdaBoost'),
+    ],
     'best_binary_baseline': [  # 69-75%
         (1, 'AdaBoost'),
         (0, 'Decision Tree'),
@@ -56,8 +79,11 @@ CASCADES = {
         (3, 'Naive Bayes'),
         (0, 'Random Forest'),
     ],
-
-
+    'best_binary_baseline+BPRS+disorders': [  # 77%
+        (1, 'AdaBoost'),
+        (0, 'Decision Tree'),
+        (2, 'Linear SVM'),
+    ],
 }
 
 
