@@ -84,6 +84,11 @@ CASCADES = {
         (2, 'Naive Bayes'),
         (0, 'AdaBoost'),
     ],
+    'best_baseline+bprs+disorders+sentiment': [  # 70%
+        (3, 'Linear SVM'),
+        (2, 'Naive Bayes'),
+        (0, 'Decision Tree'),
+    ],
     'best_binary_baseline': [  # 69-75%
         (1, 'AdaBoost'),
         (0, 'Decision Tree'),
