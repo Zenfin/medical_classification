@@ -8,13 +8,14 @@ from ml import TRAIN_PERCENT, ALL_CLASSIFIERS
 
 
 def combo_cascade_on_file(filename, shuffle=False, ignore=[], chunk_size=3,
-                          binary=False):
+                          binary=False, map_func=None):
     """Get highest cascade from all possible combos on a file."""
     train_test_data = train_test(
         load_data(filename),
         train_percent=TRAIN_PERCENT,
         shuffle=shuffle,
-        ignore=ignore
+        ignore=ignore,
+        map_func=map_func
     )
     combo_cascade(chunk_size, binary, *train_test_data)
 

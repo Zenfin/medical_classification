@@ -180,3 +180,56 @@ DISORDERS = OrderedDict([
     ("transient tic disorder", ["transient tic disorder"]),
     ("trichotillomania", ["trichotillomania"]),
 ])
+
+
+SYMPTOMS = OrderedDict([
+    ('Depression', OrderedDict([
+        ('Emotional', ['Sadness', 'anxiety', 'guilt', 'anger', 'mood swings', 'lack of emotion', 'helplessness', 'hopelessness']),
+        ('Psychological', ['self-criticism', 'criticizes self', 'self-blame', 'blames self', 'pessimism', 'pessimistic', 'impaired memory', 'bad memory', "impaired concentration", "indecisiveness", "confusion", "thoughts of suicide", "SI", "SA"]),
+        ('Behavioral', ['Crying', 'loneliness', 'lonely', 'worrying', 'neglect', 'personal appearance', 'no motivation', 'lacking motivation', 'lacks motivation', 'drug use', 'alcohol use']),
+        ('Physical', ['fatigue', 'tired', 'lack of energy', 'overeating', 'loss of appetite', 'constipation', 'weight loss', 'weigth gain', 'irregular menstrual cycle', 'loss of sexual desire', 'aches', 'pains']),
+    ])),
+    ('Anxiety', OrderedDict([
+        ('Physical', ['Heart palpitations', 'chest pain', 'rapid heartbeat', 'flushing', 'hyperventilation', 'hyperventalating', 'shortness of breath', 'dizziness', 'headache', 'sweating', 'tingling', 'numbness', 'choking', 'dry mouth', 'nausea', 'vomiting', 'diarrhea', 'muscle aches', 'restlessness', 'tremors', 'shaking']),
+        ('Psychological', ['Unrealistic fear', 'excessive fear', 'excessive worry', 'unrealistic worry', 'mind racing', 'going blank', 'decreased concentration', 'bad memory', 'decreased memory', 'indecisiveness', 'irritability', 'impatience', 'anger', 'confusion', 'restlessness','on edge', 'nervousness', 'nervous', 'tiredness', 'sleep disturbance', 'vivid dreams']),
+        ('Behavioral', ['Avoidance', 'avoiding', 'obsessive', 'obsessivness', 'compulsive', 'compulsively', 'distress', 'phobic', 'phobia']),
+    ])),
+    ('Bi-Polar Disorder', OrderedDict([
+        ('Depressive Symptoms', ['Sadness', 'anxiety', 'guilt', 'anger', 'lack of emotion', 'helplessness', 'hopelessness', 'self-criticism', 'criticizes self', 'self-blame', 'blames self', 'pessimism', 'impaired memory', 'impaired concentration', 'indecisiveness', 'confusion', "suicice", "thoughts of suicide", "SI", "SA", 'crying spells', 'crying', 'withdrawal from others', 'worrying', 'worried', 'neglect of responsibilities', 'loss of interest in personal appearance', 'loss of motivation', 'unmotivated', 'chronic fatigue', 'fatigue', 'lack of energy', 'overeating', 'loss of appetite', 'constipation', 'weight loss', 'weight gain', 'loss of sexual desire']),
+        ('Manic Symptoms', ['Increased energy', 'overactivity', 'hyperactivity', 'elated mood', 'needing less sleep', 'rapid thinking', 'rapid speech', 'lack of inhibitions', 'grandiose delusions', 'delusions', 'lack of insight']),
+    ])),
+    ('Psychotic Disorders', OrderedDict([
+        ('Changes in Emotion and Motivation', ['Depression', 'anxiety', 'irritability', 'suspiciousness', 'blunted emotion', 'flat emotion', 'inappropriate emotion', 'change in appetite', 'reduced energy', 'reduced motivation']),
+        ('Changes in Thinking and Perception', ['Difficulty concentrating', 'difficulty paying attention', 'have changed', 'strange ideas', 'unusual perceptual experiences', 'intensity of sound', 'intensity of color', 'intensity of smell', 'delusions', 'hallucinations']),
+        ('Changes in Behavior', ['Sleep disturbance', 'social isolation', 'social withdrawal', 'reduced ability to carry out work']),
+    ])),
+])
+
+
+MEDICATIONS = [
+    'Abilify', 'Adapin', 'Adderall', 'Alepam', 'Alertec', 'Aloperidin', 'Alplax', 'Alprax', 'Alprazolam', 'Alviz', 'Alzolam', 'Amantadine', 'Ambien', 'Amisulpride', 'Amitriptyline', 'Amoxapine', 'Amfebutamone', 'Anafranil', 'Anatensol', 'Ansial', 'Ansiced', 'Antabus', 'Antabuse', 'Antideprin', 'Anxiron', 'Apo-Alpraz', 'Apo-Primidone', 'Apo-Sertral', 'Aponal', 'Apozepam', 'Aripiprazole', 'Aropax', 'Artane', 'Asendin', 'Asendis', 'Asentra', 'Ativan', 'Atomoxetine', 'Aurorix', 'Aventyl', 'Axoren',
+    'Baclofen', 'Beneficat', 'Benperidol', 'Bimaran', 'Bioperidolo', 'Biston', 'Brotopon', 'Bespar', 'Bupropion', 'Buspar', 'Buspimen', 'Buspinol', 'Buspirone', 'Buspisal,Bispa',
+    'Cabaser', 'Cabergoline', 'Calepsin', 'Calcium carbonate', 'Calcium carbimide', 'Calmax', 'Carbolith', 'Celexa', 'Chloraldurat', 'Chloralhydrat', 'Chlordiazepoxide', 'Chlorpromazine', 'Cibalith-S', 'Cipralex', 'Citalopram', 'Clomipramine', 'Clonazepam', 'Clozapine', 'Clozaril', 'Concerta', 'Constan', 'Convulex', 'Cylert', 'Cymbalta',
+    'Dapotum', 'Daquiran', 'Daytrana', 'Defanyl', 'Dalmane', 'Damixane', 'Demolox', 'Depad', 'Depakene', 'Depakote', 'Depixol', 'Desyrel', 'Dostinex', 'dextroamphetamine', 'Dexedrine', 'Diazepam', 'Didrex', 'Divalproex', 'Dogmatyl', 'Dolophine', 'Droperidol', 'Desoxyn depin',
+    'Edronax', 'Effectin', 'Effexor', 'Eglonyl', 'Einalon S', 'Elavil', 'Elontril', 'Endep', 'Epanutin', 'Epitol', 'Evekeo', 'Equetro', 'Escitalopram', 'Eskalith', 'Eskazinyl', 'Eskazine', 'Etrafon', 'Eukystol', 'Eunerpan',
+    'Faverin', 'Fazaclo', 'Fevarin', 'Finlepsin', 'Fludecate', 'Flunanthate', 'Fluoxetine', 'Fluphenazine', 'Flurazepam', 'Fluspirilene', 'Fluvoxamine', 'Focalin [Fetzima],',
+    'Gabapentin,Geodon', 'Gladem', 'Glianimon,Guanfacine',
+    'Halcion', 'Halomonth', 'Haldol', 'Haloperidol', 'Halosten',
+    'Imap', 'Imipramine', 'Imovane Itopride',
+    'Janimine', 'Jatroneural',
+    'Kalma', 'Keselan', 'Klonopin',
+    'Lamotrigine', 'Largactil', 'Levomepromazine', 'Levoprome', 'Leponex', 'Lexapro', 'Libotryp Libritabs', 'Librium', 'Linton', 'Liskantin', 'Lithane', 'Lithium', 'Lithizine', 'Lithobid', 'Lithonate', 'Lithotabs', 'Lorazepam', 'Loxapac', 'Loxapine', 'Loxitane', 'Ludiomil', 'Lunesta', 'Lustral', 'Luvox', 'Lyrica', 'Lyogen',
+    'Manegan', 'Manerix', 'Maprotiline', 'Mellaril', 'Melleretten', 'Melleril', 'Melneurin', 'Melperone', 'Meresa', 'Mesoridazine', 'Metadate', 'Methamphetamine', 'Methotrimeprazine', 'Methylin', 'Methylphenidate', 'Minitran', 'Mirapex', 'Mirapexine', 'Moclobemide', 'Modafinil', 'Modalina', 'Modecate', 'Moditen', 'Molipaxin', 'Moxadil', 'Murelax', 'Myidone', 'Mylepsinum', 'Mysoline',
+    'Nardil', 'Narol', 'Navane', 'Nefazodone', 'Neoperidol', 'Neurontin', 'Nipolept', 'Norebox', 'Normison', 'Norpramine', 'Nortriptyline', 'Novodorm', 'Nitrazepam',
+    'Olanzapine', 'Omca', 'Oprymea', 'Orap', 'Oxazepam',
+    'Pamelor', 'Parnate', 'Paroxetine', 'Paxil', 'Peluces', 'Pemoline', 'Pergolide', 'Permax', 'Permitil', 'Perphenazine', 'Pertofrane', 'Phenelzine', 'Phenytoin', 'Pimozide', 'Piportil', 'Pipotiazine', 'Pragmarel', 'Pramipexole', 'Pregabalin', 'Primidone', 'Prolift', 'Prolixin', 'Promethazine', 'Prothipendyl', 'Protriptyline', 'Provigil', 'Prozac', 'Prysoline', 'Psymion',
+    'Quetiapine',
+    'Ralozam', 'Reboxetine', 'Redeptin', 'Resimatil', 'Restoril', 'Restyl', 'Rhotrimine', 'Risperdal', 'Risperidone', 'Rispolept', 'Ritalin', 'Rivotril', 'Rubifen', 'Rozerem',
+    'Sediten', 'Seduxen', 'Selecten', 'Serax', 'Serenace', 'Serepax', 'Serenase', 'Serentil', 'Seresta', 'Serlain', 'Serlift', 'Seroquel', 'Seroxat', 'Sertan', 'Sertraline', 'Serzone', 'Sevinol', 'Sideril', 'Sifrol', 'Sigaperidol', 'Sinequan', 'Sinqualone', 'Sinquan', 'Sirtal', 'Solanax', 'Solian', 'Solvex', 'Songar', 'Stazepin', 'Stelazine', 'Stilnox', 'Stimuloton', 'Strattera', 'Sulpiride', 'Sulpiride Ratiopharm', 'Sulpiride Neurazpharm', 'Surmontil', 'Symbyax', 'Symmetrel',
+    'Tafil', 'Tavor', 'Taxagon', 'Tegretol', 'Telesmin', 'Temazepam', 'Temesta', 'Temposil', 'Terfluzine', 'Thioridazine', 'Thiothixene', 'Thombran', 'Thorazine', 'Timonil', 'Tofranil', 'Tradon', 'Tramadol', 'Tramal', 'Trancin', 'Tranax', 'Trankimazin', 'Tranquinal', 'Tranylcypromine', 'Trazalon', 'Trazodone', 'Trazonil', 'Trialodine', 'Trevilor', 'Triazolam', 'Trifluoperazine', 'Trihexane', 'Trihexyphenidyl', 'Trilafon', 'Trimipramine', 'Triptil', 'Trittico', 'Troxal', 'Tryptanol,Tryptomer',
+    'Ultram',
+    'Valium', 'Valproate', 'Valproic acid', 'Valrelease', 'Vasiprax', 'Venlafaxine', 'Vestra', 'Vigicer', 'Vivactil',
+    'Wellbutrin',
+    'Xanax', 'Xanor', 'Xydep',
+    'Zaleplon', 'Zamhexal', 'Zeldox', 'Zimovane', 'Zispin', 'Ziprasidone', 'Zolarem', 'Zoldac', 'Zoloft', 'Zolpidem', 'Zonalon', 'Zopiclone', 'Zotepine', 'Zydis', 'Zyprexa', 'Zuclopenthixol',
+]

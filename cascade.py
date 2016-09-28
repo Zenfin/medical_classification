@@ -5,12 +5,13 @@ from ml import print_results, TRAIN_PERCENT, ALL_CLASSIFIERS
 
 
 def cascade_classify_on_file(filename, classifiers, shuffle=False,
-                             ignore=[], binary=False):
+                             ignore=[], binary=False, map_func=None):
     """Classify via a cascade on a file."""
     train_test_data = train_test(load_data(filename),
                                  train_percent=TRAIN_PERCENT,
                                  shuffle=shuffle,
-                                 ignore=ignore)
+                                 ignore=ignore,
+                                 map_func=map_func)
     return cascade_classify(classifiers, *train_test_data, binary=binary)
 
 

@@ -37,6 +37,9 @@ DISORDER_HISTORY_2 = "disorder_history.csv"
 BASELINE_AND_DISORDER_HISTORY_2 = "baseline_and_disorder_history.csv"
 BASELINE_BPRS_AND_DISORDER_HISTORY_2 = "baseline_bprs_and_disorder_history.csv"
 BPRS_AND_DISORDER_HISTORY_2 = "bprs_and_disorder_history.csv"
+SENTIMENT_2 = "sentiment_by_2.csv"
+DISORDER_SENTIMENT_2 = "disorder_sentiment_by_2.csv"
+BASELINE_BPRS_DISORDER_SENTIMENT_2 = "baseline_bprs_disorder_sentiment_by_2.csv"
 
 
 def write(file_name, text, method='a'):
@@ -490,6 +493,14 @@ def negated_phrase(phrase):
         if re.findall(' {} '.format(negator), phrase):
             return True
     return False
+
+
+def doctor_text(data):
+    return ".".join([
+        chief_complaint(data),
+        history_and_precipitating_events(data),
+        formulation(data)
+    ])
 
 
 def chunk(iterable, size):

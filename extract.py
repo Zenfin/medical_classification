@@ -3,15 +3,14 @@ import os
 import re
 
 import nltk.data
+from vaderSentiment.vaderSentiment import sentiment
 
 from main import (
     DATA_PATH,
     OUTPUT_PATH,
-    chief_complaint,
-    formulation,
-    history_and_precipitating_events,
     negated_phrase,
     read_file,
+    doctor_text,
 )
 from fields import FIELDS
 from lists import DISORDERS
@@ -80,16 +79,9 @@ class DisorderHistoryRowWriter(_AbstractRowWriter):
     def create(self, file_path):
         data = read_file(file_path)
         outcome = FIELDS['outcome']['func'](data)
-        disorders = self.disorders_with_a_history(self.doctor_text(data))
+        disorders = self.disorders_with_a_history(doctor_text(data))
         disorder_binaries = [1 if key in disorders else 0 for key in DISORDERS]
         return [outcome, len(disorders)] + disorder_binaries
-
-    def doctor_text(self, data):
-        return ".".join([
-            chief_complaint(data),
-            history_and_precipitating_events(data),
-            formulation(data)
-        ])
 
     def disorders_with_a_history(self, data):
         """Get the disorders with a history."""
@@ -121,6 +113,30 @@ class DisorderHistoryRowWriter(_AbstractRowWriter):
         for disorder in disorder_group:
             if re.findall(disorder, phrase.lower()):
                 return True
+
+
+class SentimentRowWriter(_AbstractRowWriter):
+    vader_keys = ['neg', 'neu', 'pos', 'compound']
+
+    def headers(self):
+        return ['outcome'] + ["{}_sentiment_avg".format(key)
+                              for key in self.vader_keys]
+
+    def create(self, file_path):
+        data = read_file(file_path)
+        outcome = FIELDS['outcome']['func'](data)
+        sentiment_sentences =  self.sentiment_sentences(doctor_text(data))
+        return [outcome] + [self.avg(sentiment_sentences, key)
+                            for key in self.vader_keys]
+
+    def sentiment_sentences(self, data):
+        """Get the disorders with a history."""
+        data = data.replace('\n', '')
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        return [sentiment(sentence) for sentence in tokenizer.tokenize(data)]
+
+    def avg(self, sentences, key):
+        return sum([s[key] for s in sentences]) / float(len(sentences))
 
 
 def process(folder, writer):

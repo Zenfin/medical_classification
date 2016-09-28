@@ -77,14 +77,15 @@ def filter_data(x, y, ignore=[]):
 
 
 def train_test(data, train_percent=80, dependent_variable="outcome",
-               shuffle=False, ignore=[]):
+               shuffle=False, ignore=[], map_func=None):
     """Return train and test X, Y pairs based on data."""
     x, y = extract_y(data, dependent_variable)
+    if map_func:
+        x = [map(map_func, v) for v in x]
     if shuffle:
         x, y = shuffle_x_y(x, y)
     if ignore:
         x, y = filter_data(x, y, ignore)
-    train_x, train_y, test_x, test_y = split_into_train_test(
-        x, y, train_percent
-    )
+    data = split_into_train_test(x, y, train_percent)
+    train_x, train_y, test_x, test_y = data
     return train_x, train_y, test_x, test_y
